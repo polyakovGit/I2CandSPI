@@ -131,6 +131,7 @@ int main(void) {
 
 	/* USER CODE BEGIN 1 */
 	uint8_t i = 0;
+	uint8_t data;
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -170,8 +171,12 @@ int main(void) {
 
 		/* USER CODE BEGIN 3 */
 		for (i = 0; i < 10; i++) {
-			aTxBuffer[0] = symbol_transform(i);
-			HAL_SPI_Transmit(&hspi1, (uint8_t*) aTxBuffer, 1, 5000);//SN74HC595N
+			data = symbol_transform(i);
+			HAL_SPI_Transmit(&hspi1, &data, 1, 5000);//SN74HC595N
+//		    while(!(SPI1->SR&SPI_SR_TXE)) {}
+//		    *(volatile uint8_t*)&SPI1->DR = data;
+//		    SPI1->CR1 &= ~SPI_CR1_SPE;
+//		    SPI1->CR1 |= SPI_CR1_SPE;
 			cs_strob();
 			HAL_Delay(1000);
 
